@@ -2,11 +2,11 @@
 let HelpMsg =
   `
     HERE ARE THE AVAILABLE COMMANDS AND THEIR UTILITY
-     /about - about Bot
-     /omniflix - about Omniflix
-	   /subscribe - subscribe to OmniFlix network Auction updates and add omniflix address after subscribe \ne.g:(/subscribe omniflix1rtwjj6qfn62emyghhgfhhtjedv3kgd9j20tx)
+     /about - About the bot
+     /omniflix - About OmniFlix Network
+	   /subscribe - subscribe with your OmniFlix account address to get notificaations \ne.g:(/subscribe omniflix1rtwjj6qfn62emyghhgfhhtjedv3kgd9j20tx)
 	   /unsubscribe - unsubscribe updates
-     /join - join bot and subscribe to get personal updates of auction
+     /join - join the bot and subscribe to get personalized updates
      `
 let aboutBot = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
 let aboutOmniflix =`Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua`
@@ -14,9 +14,9 @@ let joinBot = `connect the bot to get personal message. Click the link below.\n@
 
 let createAuctionMsg = `***New Auction Listed On MarketPlace***  
 https://omniflix.market/nft/{ACTIVITYNFT_IDID}  
-The Auction is Starting at:  
+The Auction is starting at:  
 ***{START_DATE}***  
-And The Auction is Ending at:  
+and the Auction is ending at:  
 ***{END_DATE}***` ;
 
 
@@ -67,7 +67,7 @@ https://omniflix.market/nft/{ACTIVITYID}`
 
 
 let mintONFTHelperMsg = {
-  creatorMsg: `***You have minted a new nft***  
+  creatorMsg: `***You have minted a new NFT***  
 https://omniflix.market/nft/{NFTID)`,
 
   ownerMsg: `***A new NFT was minted in you account***  
@@ -89,26 +89,26 @@ https://omniflix.market/collection/{DENOMID}`
 }
 
 
-let updateDenomHelperMsg = `***Your collection has been updated ***  
+let updateDenomHelperMsg = `***Your collection has been updated***  
 **Symbol:  {SYMBOL}**  
 **Name:  {NAME} **  
 https://omniflix.market/collection/{DENOMID}`;
 
 
-let listingHelperMsg = ` ***New Listing On MarketPlace.***  
+let listingHelperMsg = ` ***New fixed-price listing on OmniFlix Market.***  
 https://omniflix.market/nft/{ACTIVITYNFT_IDID}`
 
 
-let delistingHelperMsg = ` *** You Delisting Following Nft From MarketPlace.***  
+let delistingHelperMsg = ` *** You delisted the following NFT from OmniFlix Market.***  
 https://omniflix.market/nft/{ACTIVITYNFT_IDID}`
 
 
 
 let transferNftHelperMsg = {
-  senderMsg: ` ***You Transferred Nft.***  
+  senderMsg: ` ***You transferred the NFT.***  
 https://omniflix.market/nft/{ACTIVITYID}`,
 
-  receiverMsg: ` ***You Receved New NFT In your Account***  
+  receiverMsg: ` ***You received a new NFT in your Account***  
 https://omniflix.market/nft/{ACTIVITYID}`
 
 
