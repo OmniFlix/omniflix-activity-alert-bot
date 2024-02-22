@@ -55,7 +55,7 @@ let listingHelper = async (activity) => {
                 }
             }
             if (activity.nft_id.nsfw){
-                let previewUrl = mediaUrl
+                let previewUrl = 'https://f4.omniflix.market/assets/logos/og_image.png'
                 options.caption = msg
                 bot.telegram.sendPhoto(chatid, previewUrl, options)
                 .then((res) => {})

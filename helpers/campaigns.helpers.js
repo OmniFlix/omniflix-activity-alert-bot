@@ -331,7 +331,7 @@ let MsgClaimCampaignHelper = async (activity) => {
                 }
             }
             if (activity.nft.nsfw) {
-                let previewUrl = mediaUrl
+                let previewUrl = 'https://f4.omniflix.market/assets/logos/og_image.png'
                 options.caption = msg
                 bot.telegram.sendPhoto(user_chatIdOwner, previewUrl, options)
             }
@@ -418,7 +418,7 @@ let campaignTransferNftHelper = async (activity) => {
         let mediaUrl = campaignTransferNftHelperMsg.url.fmt({ ACTIVITYID: activity.id })
         try {
             if(activity.nsfw){
-                let previewUrl = mediaUrl
+                let previewUrl = 'https://f4.omniflix.market/assets/logos/og_image.png'
                 bot.telegram.sendPhoto(user_chatIdSender, previewUrl, {
                     caption: msg,
                     parse_mode: 'Markdown',

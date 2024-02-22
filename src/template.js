@@ -117,9 +117,9 @@ let updateDenomHelperMsg = {
 
 
 let listingHelperMsg = {
-  message: `***New Listing of ***[NFT](https://f4.omniflix.market/nft/{ACTIVITYNFT_IDID}) ***by ***[{COLLECTION_NAME}](https://f4.omniflix.market/collection/{DENOMID})\n[View on Omniflix Market](https://f4.omniflix.market/nft/{ACTIVITYNFT_IDID})`,
-  denom_url: `https://f4.omniflix.market/collection/{DENOMID}`,
-  activity_url: `https://f4.omniflix.market/nft/{ACTIVITYNFT_IDID}`
+  message: `***New Listing of ***[NFT](https://omniflix.market/nft/{ACTIVITYNFT_IDID}) ***by ***[{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID})\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYNFT_IDID})`,
+  denom_url: `https://omniflix.market/collection/{DENOMID}`,
+  activity_url: `https://omniflix.market/nft/{ACTIVITYNFT_IDID}`
 }
 
 
