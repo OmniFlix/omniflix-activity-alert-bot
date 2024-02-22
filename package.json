@@ -2,7 +2,7 @@
   "name": "market_telegram_bot",
   "version": "1.0.0",
   "description": "this is Omniflix Marketplace Notification Bot",
-  "main": "nodemon index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

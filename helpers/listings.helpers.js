@@ -36,21 +36,54 @@ let listingHelper = async (activity) => {
             return console.log("no User subscribed")
         }
     }).clone()
-    // console.log(date.format(activity.created_at, 'ddd MMM YYYY at SS:SS [UTC]'))
-    let msg = listingHelperMsg.message.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id });
-    let mediaUrl = listingHelperMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id });
+    let msg = listingHelperMsg.message.fmt({ 
+        ACTIVITYNFT_IDID: activity.nft_id.id, 
+        DENOMID: activity.denom_id.id, 
+        COLLECTION_NAME: activity.denom_id.name
+    });
+    let mediaUrl = listingHelperMsg.activity_url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id });
     user_chatId.forEach(async (chatid) => {
         try {
-            bot.telegram.sendMessage(chatid, msg, {
+            let options = {
                 parse_mode: 'Markdown',
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            { text: "New Listing On MarketPlace", url: mediaUrl }
+                            { text: "Listed NFT", url: mediaUrl }
                         ]
                     ]
                 }
-            })
+            }
+            if (activity.nft_id.nsfw){
+                let previewUrl = mediaUrl
+                options.caption = msg
+                bot.telegram.sendPhoto(chatid, previewUrl, options)
+                .then((res) => {})
+                .catch((e) => {
+                    if (e.response && e.response.error_code === 429) {
+                        console.log('Too many requests');
+                        setTimeout(() => {
+                            bot.telegram.sendPhoto(chatid, previewUrl, options)
+                        }, 3*1000)
+                    } else {
+                        throw e;
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(chatid, msg, options)
+                .then((res) => {})
+                .catch((e) => {
+                    if (e.response && e.response.error_code === 429) {
+                        console.log('Too many requests');
+                        setTimeout(() => {
+                            bot.telegram.sendMessage(chatid, msg, options)
+                        }, 3*1000)
+                    } else {
+                        throw e;
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -99,7 +132,11 @@ let deListingHelper = async (activity) => {
 
     if (user_omniflixAddressOwner != undefined && user_chatIdOwner != undefined) {
 
-        let msg = delistingHelperMsg.message.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
+        let msg = delistingHelperMsg.message.fmt({ 
+            ACTIVITYNFT_IDID: activity.nft_id.id, 
+            DENOMID : activity.denom_id.id, 
+            COLLECTION_NAME: activity.denom_id.name
+        })
         let mediaUrl = delistingHelperMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
 
 

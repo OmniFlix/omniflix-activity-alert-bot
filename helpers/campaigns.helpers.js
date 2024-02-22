@@ -3,7 +3,7 @@ const bot = new Telegraf(process.env.token);
 const date = require('date-and-time');
 const { userData } = require('../models/user.model');
 const { ActivityData } = require("../models/activity.model");
-const { createCampaignMsg, cancelCampaignMsg, endCampaignMsg, claimCampaignMsg, campaignTransferNftHelperMsg, streamSendHelperMsg, StopStreamMsg, claimStreamedAmountMsg } = require('../src/template');
+const { createCampaignMsg, cancelCampaignMsg, endCampaignMsg, claimCampaignMsg, campaignTransferNftHelperMsg, streamSendHelperMsg, StopStreamMsg, claimStreamedAmountMsg, depositCampaignMsg } = require('../src/template');
 String.prototype.fmt = function (hash) {
     var string = this, key; for (key in hash) string = string.replace(new RegExp('\\{' + key + '\\}', 'gm'), hash[key]); return string
 }
@@ -19,7 +19,7 @@ let MsgCreateCampaignHelper = async (activity) => {
         notificationTypes: { $ne: messageType },
         $or: [
             { collections: [] },
-            { collections: activity.denom.id }
+            { collections: activity.denom_id.id }
         ]
     }, async (error, result) => {
         if (error) {
@@ -320,7 +320,7 @@ let MsgClaimCampaignHelper = async (activity) => {
         let mediaUrl = claimCampaignMsg.url.fmt({ ACTIVITYNFT_IDID: activity.id })
 
         try {
-            bot.telegram.sendMessage(user_chatIdOwner, msg, {
+            let options = {
                 parse_mode: 'Markdown',
                 reply_markup: {
                     inline_keyboard: [
@@ -329,7 +329,15 @@ let MsgClaimCampaignHelper = async (activity) => {
                         ]
                     ]
                 }
-            })
+            }
+            if (activity.nft.nsfw) {
+                let previewUrl = mediaUrl
+                options.caption = msg
+                bot.telegram.sendPhoto(user_chatIdOwner, previewUrl, options)
+            }
+            else {
+                bot.telegram.sendMessage(user_chatIdOwner, msg, options)
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -409,16 +417,32 @@ let campaignTransferNftHelper = async (activity) => {
         let msg = campaignTransferNftHelperMsg.senderMsg.fmt({ ACTIVITYID: activity.id })
         let mediaUrl = campaignTransferNftHelperMsg.url.fmt({ ACTIVITYID: activity.id })
         try {
-            bot.telegram.sendMessage(user_chatIdSender, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "NFT Transferred", url: mediaUrl }
+            if(activity.nsfw){
+                let previewUrl = mediaUrl
+                bot.telegram.sendPhoto(user_chatIdSender, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "NFT Transferred", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(user_chatIdSender, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "NFT Transferred", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -854,7 +878,7 @@ let MsgClaimStreamedAmountHelper = async (activity) => {
         }
     }).clone()
 
-
+    activity = activity.toObject()
     if (user_omniflixAddressOwner != undefined && user_chatIdOwner != undefined) {
 
         let msg = claimStreamedAmountMsg.message.fmt({ ACTIVITYNFT_IDID: activity.id, AMOUNT: (activity.amount.amount / 1000000) })

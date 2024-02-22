@@ -2,22 +2,68 @@ let request = require("request")
 var cron = require('node-cron');
 const dotenv = require('dotenv').config()
 const { ActivityData } = require("../models/activity.model");
-const { createAuctionHelper, cancelAuctionHelper, removeAuctionHelper, processBidAuctionHelper, placeBidAuctionHelper } = require("../helpers/auctions.helpers");
+const { 
+    createAuctionHelper, 
+    cancelAuctionHelper, 
+    removeAuctionHelper, 
+    processBidAuctionHelper, 
+    placeBidAuctionHelper 
+} = require("../helpers/auctions.helpers");
 const { listingHelper, deListingHelper } = require("../helpers/listings.helpers");
 const { transferNftHelper } = require("../helpers/transferNft.helper");
-const { buyNftHelper, burnNftHelper, mintONFTHelper, burnNftClaimHelper } = require("../helpers/buyNfts.helpers");
-const { updateDenomHelper, transferDenomHelper, createDenomHelper } = require("../helpers/denoms.helper");
+const { 
+    buyNftHelper, 
+    burnNftHelper, 
+    mintONFTHelper, 
+    burnNftClaimHelper 
+} = require("../helpers/buyNfts.helpers");
+const { 
+    updateDenomHelper, 
+    transferDenomHelper, 
+    createDenomHelper 
+} = require("../helpers/denoms.helper");
 const https = require('https')
 const { userData } = require('../models/user.model');
-const { bulkAuction, bulkListingNft, bulkAuctionCancel, bulkAuctionRemoved, bulkDeListingNft, bulkBurnNft, bulkMinting, bulkTransfer, bulkProcessBid, bulkPlaceBid, bulkBuyNft, bulkUpdateCollection, bulkTransferCollection, bulkCreateCollection, bulkCreateCampaign, bulkCancelCampaign, bulkDepositCampaign, bulkEndCampaign } = require("../helpers/bulkNotification.helper");
-const { MsgCreateCampaignHelper, MsgCancelCampaignHelper, MsgDepositCampaignHelper, endCampaignHelper, campaignTransferNftHelper, MsgStreamSendHelper, MsgStopStreamHelper, MsgClaimStreamedAmountHelper, MsgStreamCreatedHelper } = require("../helpers/campaigns.helpers");
+const { 
+    bulkAuction, 
+    bulkListingNft, 
+    bulkAuctionCancel, 
+    bulkAuctionRemoved, 
+    bulkDeListingNft, 
+    bulkBurnNft, 
+    bulkMinting, 
+    bulkTransfer, 
+    bulkProcessBid, 
+    bulkPlaceBid, 
+    bulkBuyNft, 
+    bulkUpdateCollection, 
+    bulkTransferCollection, 
+    bulkCreateCollection, 
+    bulkCreateCampaign, 
+    bulkCancelCampaign, 
+    bulkDepositCampaign, 
+    bulkEndCampaign 
+} = require("../helpers/bulkNotification.helper");
+const { 
+    MsgCreateCampaignHelper, 
+    MsgCancelCampaignHelper, 
+    MsgDepositCampaignHelper, 
+    MsgClaimCampaignHelper, 
+    endCampaignHelper, 
+    campaignTransferNftHelper, 
+    MsgStreamSendHelper, 
+    MsgStopStreamHelper, 
+    MsgClaimStreamedAmountHelper, 
+
+    MsgStreamCreatedHelper 
+} = require("../helpers/campaigns.helpers");
 
 
 
 let MainScheduler = async () => {
     try {
         let verifiedCollection = []
-        let url = `${process.env.DATALAYER_COLLECTION_URL}/collections?sortBy=created_at&order=desc&withNFTs=true&verified=true&ipInfringement=false&limit=1000`
+        let url = `${process.env.DATALAYER_COLLECTION_URL}/collections?sortBy=created_at&order=desc&withNFTs=true&limit=1000`
         let options = { json: true };
 
         request(url, options, async (error, res, body) => {
@@ -29,6 +75,7 @@ let MainScheduler = async () => {
                 collections.forEach(collection => {
                     verifiedCollection.push(collection.id)
                 })
+                // console.log(verifiedCollection)
 
 
                 await ActivityData.find({
@@ -98,11 +145,11 @@ let MainScheduler = async () => {
 
                                     } else if (activity.type == "MsgCreateCampaign") {
                                         bulkCreateCampaign(activity, totalCount)
-                                    } else if (activity.type == "MsgCreateCampaign") {
+                                    } else if (activity.type == "MsgCancelCampaign") {
                                         bulkCancelCampaign(activity, totalCount)
-                                    } else if (activity.type == "MsgCreateCampaign") {
+                                    } else if (activity.type == "MsgDepositCampaign") {
                                         bulkDepositCampaign(activity, totalCount)
-                                    } else if (activity.type == "MsgCreateCampaign") {
+                                    } else if (activity.type == "EndCampaign") {
                                         bulkEndCampaign(activity, totalCount)
                                     }
                                     
@@ -144,11 +191,15 @@ let MainScheduler = async () => {
                                                 MsgCancelCampaignHelper(activity)
                                             } else if (activity.type == "MsgDepositCampaign") {
                                                 MsgDepositCampaignHelper(activity)
+                                            } else if (activity.type == "MsgClaim") {
+                                                MsgClaimCampaignHelper(activity)
                                             } else if (activity.type == "EndCampaign") {
                                                 endCampaignHelper(activity)
                                             } else if (activity.type == "TransferNft") {
                                                 campaignTransferNftHelper(activity)
-                                            } else if (activity.type == "MsgStreamSend") {
+                                            } else if (activity.type == "STREAM_PAYMENT_TYPE_CONTINUOUS") {
+                                                MsgStreamSendHelper(activity)
+                                            } else if (activity.type == "STREAM_PAYMENT_TYPE_DELAYED") {
                                                 MsgStreamSendHelper(activity)
                                             } else if (activity.type == "MsgStopStream") {
                                                 MsgStopStreamHelper(activity)
@@ -198,11 +249,15 @@ let MainScheduler = async () => {
                                             MsgCancelCampaignHelper(activity)
                                         } else if (activity.type == "MsgDepositCampaign") {
                                             MsgDepositCampaignHelper(activity)
+                                        } else if (activity.type == "MsgClaim") {
+                                            MsgClaimCampaignHelper(activity)
                                         } else if (activity.type == "EndCampaign") {
                                             endCampaignHelper(activity)
                                         } else if (activity.type == "TransferNft") {
                                             campaignTransferNftHelper(activity)
-                                        } else if (activity.type == "MsgStreamSend") {
+                                        } else if (activity.type == "STREAM_PAYMENT_TYPE_CONTINUOUS") {
+                                            MsgStreamSendHelper(activity)
+                                        } else if (activity.type == "STREAM_PAYMENT_TYPE_DELAYED") {
                                             MsgStreamSendHelper(activity)
                                         } else if (activity.type == "MsgStopStream") {
                                             MsgStopStreamHelper(activity)

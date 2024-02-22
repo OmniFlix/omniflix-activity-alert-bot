@@ -41,22 +41,38 @@ let createAuctionHelper = async (activity) => {
     console.log(user_chatId)
 
 
-    let msg = createAuctionMsg.message.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id, START_DATE: date.format(activity.start_time, 'ddd MMM YYYY at SS:SS [UTC]'), END_DATE: date.format(activity.end_time, 'ddd MMM YYYY at SS:SS [UTC]') })
+    let msg = createAuctionMsg.message.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id, START_DATE: date.format(activity.start_time, 'ddd MMM YYYY at HH:MM [UTC]'), END_DATE: date.format(activity.end_time, 'ddd MMM YYYY at HH:MM [UTC]') })
     let mediaUrl = createAuctionMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
     user_chatId.forEach(async (chatid) => {
         // console.log(user_chatId)
 
         try {
-            bot.telegram.sendMessage(chatid, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "New Auction Created", url: mediaUrl }
+            if (activity.nft_id.nsfw){
+                previewUrl = mediaUrl
+                bot.telegram.sendPhoto(chatid, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "New Auction Created", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(chatid, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "New Auction Created", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -108,18 +124,33 @@ let cancelAuctionHelper = async (activity) => {
 
         let msg = cancelAuctionMsg.message.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
         let mediaUrl = cancelAuctionMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
-
         try {
-            bot.telegram.sendMessage(user_chatIdOwner, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "Auction Cancelled", url: mediaUrl }
+            if(activity.nft_id.nsfw){
+                let previewUrl = mediaUrl
+                bot.telegram.sendPhoto(user_chatIdOwner, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Auction Cancelled", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(user_chatIdOwner, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Auction Cancelled", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -272,16 +303,32 @@ let processBidAuctionHelper = async (activity) => {
         let msg = processBidAuctionHelperMsg.auctionWonMsg.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
         let mediaUrl = processBidAuctionHelperMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
         try {
-            bot.telegram.sendMessage(user_chatIdBidder, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "Auction Won", url: mediaUrl }
+            if (activity.nft_id.nsfw){
+                let previewUrl = mediaUrl
+                bot.telegram.sendPhoto(user_chatIdBidder, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Auction Won", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(user_chatIdBidder, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Auction Won", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -312,18 +359,33 @@ let processBidAuctionHelper = async (activity) => {
 
         let msg = processBidAuctionHelperMsg.auctionEndMsg.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
         let mediaUrl = processBidAuctionHelperMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
-
         try {
-            bot.telegram.sendMessage(user_chatIdOwner, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "Auction Ended", url: mediaUrl }
+            if (activity.nft_id.nsfw){
+                let previewUrl = mediaUrl
+                bot.telegram.sendPhoto(user_chatIdOwner, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Auction Ended", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(user_chatIdOwner, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Auction Ended", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -383,16 +445,32 @@ let placeBidAuctionHelper = async (activity) => {
                 let ownerMsg = placeBidAuctionHelperMsg.ownerMsg.fmt({ NFTID: nftId })
                 let mediaUrl = placeBidAuctionHelperMsg.url.fmt({ NFTID: nftId })
                 try {
-                    bot.telegram.sendMessage(data.userId, ownerMsg, {
-                        parse_mode: 'Markdown',
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: "New Bid Placed", url: mediaUrl }
+                    if (activity.nft_id.nsfw){
+                        let previewUrl = mediaUrl
+                        bot.telegram.sendPhoto(data.userId, previewUrl, {
+                            caption: msg,
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "New Bid Placed", url: mediaUrl }
+                                    ]
                                 ]
-                            ]
-                        }
-                    })
+                            }
+                        })
+                    }
+                    else{
+                        bot.telegram.sendMessage(data.userId, ownerMsg, {
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "New Bid Placed", url: mediaUrl }
+                                    ]
+                                ]
+                            }
+                        })
+                    }
                 } catch (e) {
                     if (e.response && e.response.error_code === 403) {
                         console.log('Bot was blocked by the user');
@@ -419,16 +497,32 @@ let placeBidAuctionHelper = async (activity) => {
                 let bidderMsg = placeBidAuctionHelperMsg.bidderMsg.fmt({ NFTID: nftId })
                 let mediaUrl = placeBidAuctionHelperMsg.url.fmt({ NFTID: nftId })
                 try {
-                    bot.telegram.sendMessage(data.userId, bidderMsg, {
-                        parse_mode: 'Markdown',
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: "You Placed New Bid", url: mediaUrl }
+                    if (activity.nft_id.nsfw){
+                        let previewUrl = mediaUrl
+                        bot.telegram.sendPhoto(data.userId, previewUrl, {
+                            caption: msg,
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "You Placed New Bid", url: mediaUrl }
+                                    ]
                                 ]
-                            ]
-                        }
-                    })
+                            }
+                        })
+                    }
+                    else{
+                        bot.telegram.sendMessage(data.userId, bidderMsg, {
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "You Placed New Bid", url: mediaUrl }
+                                    ]
+                                ]
+                            }
+                        })
+                    }
                 } catch (e) {
                     if (e.response && e.response.error_code === 403) {
                         console.log('Bot was blocked by the user');
@@ -459,16 +553,32 @@ let placeBidAuctionHelper = async (activity) => {
                         let previousBidderMsg = placeBidAuctionHelperMsg.previousBidderMsg.fmt({ NFTID: nftId })
                         let mediaUrl = placeBidAuctionHelperMsg.url.fmt({ NFTID: nftId })
                         try {
-                            bot.telegram.sendMessage(data.userId, previousBidderMsg, {
-                                parse_mode: 'Markdown',
-                                reply_markup: {
-                                    inline_keyboard: [
-                                        [
-                                            { text: "Bid Overbidden", url: mediaUrl }
+                            if (activity.nft_id.nsfw){
+                                let previewUrl = mediaUrl
+                                bot.telegram.sendPhoto(data.userId, previewUrl, {
+                                    caption: msg,
+                                    parse_mode: 'Markdown',
+                                    reply_markup: {
+                                        inline_keyboard: [
+                                            [
+                                                { text: "Bid Overbidden", url: mediaUrl }
+                                            ]
                                         ]
-                                    ]
-                                }
-                            })
+                                    }
+                                })
+                            }
+                            else{
+                                bot.telegram.sendMessage(data.userId, previousBidderMsg, {
+                                    parse_mode: 'Markdown',
+                                    reply_markup: {
+                                        inline_keyboard: [
+                                            [
+                                                { text: "Bid Overbidden", url: mediaUrl }
+                                            ]
+                                        ]
+                                    }
+                                })
+                            }
                         } catch (e) {
                             if (e.response && e.response.error_code === 403) {
                                 console.log('Bot was blocked by the user');

@@ -50,18 +50,33 @@ let buyNftHelper = async (activity) => {
 
         let msg = buyNftHelperMsg.NftOwnerMsg.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
         let mediaUrl = buyNftHelperMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
-
         try {
-            bot.telegram.sendMessage(user_chatIdOwner, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "Nft Sold", url: mediaUrl }
+            if (activity.nft_id.nsfw){
+                let previewUrl = mediaUrl
+                bot.telegram.sendPhoto(user_chatIdOwner, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Nft Sold", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(user_chatIdOwner, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Nft Sold", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -80,18 +95,33 @@ let buyNftHelper = async (activity) => {
     if (user_chatIdBuyer != undefined && user_omniflixAddressBuyer != undefined) {
         let msg = buyNftHelperMsg.NftBuyerMsg.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
         let mediaUrl = buyNftHelperMsg.url.fmt({ ACTIVITYNFT_IDID: activity.nft_id.id })
-
         try {
-            bot.telegram.sendMessage(user_chatIdBuyer, msg, {
-                parse_mode: 'Markdown',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "You Bought New NFT", url: mediaUrl }
+            if (activity.nft_id.nsfw){
+                let previewUrl = mediaUrl
+                bot.telegram.sendPhoto(user_chatIdBuyer, previewUrl, {
+                    caption: msg,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "You Bought New NFT", url: mediaUrl }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            }
+            else{
+                bot.telegram.sendMessage(user_chatIdBuyer, msg, {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "You Bought New NFT", url: mediaUrl }
+                            ]
+                        ]
+                    }
+                })
+            }
         } catch (e) {
             if (e.response && e.response.error_code === 403) {
                 console.log('Bot was blocked by the user');
@@ -213,18 +243,33 @@ let mintONFTHelper = async (activity) => {
                 let msg = mintONFTHelperMsg.creatorMsg.fmt({ NFTID: nftId })
                 let mediaUrl = mintONFTHelperMsg.url.fmt({ NFTID: nftId })
                 let userId = data.userId;
-
                 try {
-                    bot.telegram.sendMessage(userId, msg, {
-                        parse_mode: 'Markdown',
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: "Minted New Nft", url: mediaUrl }
+                    if (activity.nsfw){
+                        let previewUrl = mediaUrl
+                        bot.telegram.sendPhoto(userId, previewUrl, {
+                            caption: msg,
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "Minted New Nft", url: mediaUrl }
+                                    ]
                                 ]
-                            ]
-                        }
-                    })
+                            }
+                        })
+                    }
+                    else{
+                        bot.telegram.sendMessage(userId, msg, {
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "Minted New Nft", url: mediaUrl }
+                                    ]
+                                ]
+                            }
+                        })
+                    }
                 } catch (e) {
                     if (e.response && e.response.error_code === 403) {
                         console.log('Bot was blocked by the user');
@@ -248,16 +293,32 @@ let mintONFTHelper = async (activity) => {
                 let mediaUrl = mintONFTHelperMsg.url.fmt({ NFTID: nftId })
                 let userId = data.userId;
                 try {
-                    bot.telegram.sendMessage(userId, msg, {
-                        parse_mode: 'Markdown',
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: "Minted New Nft", url: mediaUrl }
+                    if (activity.nsfw){
+                        let previewUrl = mediaUrl
+                        bot.telegram.sendPhoto(userId, previewUrl, {
+                            caption: msg,
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "Minted New Nft", url: mediaUrl }
+                                    ]
                                 ]
-                            ]
-                        }
-                    })
+                            }
+                        })
+                    }
+                    else{
+                        bot.telegram.sendMessage(userId, msg, {
+                            parse_mode: 'Markdown',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: "Minted New Nft", url: mediaUrl }
+                                    ]
+                                ]
+                            }
+                        })
+                    }
                 } catch (e) {
                     if (e.response && e.response.error_code === 403) {
                         console.log('Bot was blocked by the user');

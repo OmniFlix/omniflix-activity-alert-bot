@@ -48,7 +48,11 @@ let transferNftHelper = async (activity) => {
 
     if (user_omniflixAddressSender != undefined && user_chatIdSender != undefined) {
 
-        let msg = transferNftHelperMsg.senderMsg.fmt({ ACTIVITYID: activity.id })
+        let msg = transferNftHelperMsg.senderMsg.fmt({ 
+            ACTIVITYID: activity.id, 
+            DENOMID: activity.denom_id.id, 
+            COLLECTION_NAME: activity.denom_id.name 
+        })
         let mediaUrl = transferNftHelperMsg.url.fmt({ ACTIVITYID: activity.id })
         try {
             bot.telegram.sendMessage(user_chatIdSender, msg, {
