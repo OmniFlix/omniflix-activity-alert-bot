@@ -27,8 +27,7 @@ let interactiveVideoFetching = async () => {
                         }, async (error, result) => {
                             if (error) {
                                 console.log(error)
-                            } else if (result) {
-                                console.log("IV Result Already Present!")
+                            } else if (result) {      
                             } else {
                                 interactiveVideo.isNotified=false
                                 let interactiveVideoD = new interactiveVideoData(interactiveVideo)
