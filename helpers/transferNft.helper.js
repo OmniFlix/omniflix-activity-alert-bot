@@ -46,9 +46,11 @@ let transferNftHelper = async (activity) => {
     }).clone()
 
 
+    let parts = activity.preview_uri ? activity.preview_uri.split('/') : activity.media_uri.split('/')
+    console.log(parts[parts.length - 1])
     if (user_omniflixAddressSender != undefined && user_chatIdSender != undefined) {
-
         let msg = transferNftHelperMsg.senderMsg.fmt({ 
+            IPFS_HASH: parts[parts.length - 1],
             ACTIVITYID: activity.id, 
             DENOMID: activity.denom_id.id, 
             COLLECTION_NAME: activity.denom_id.name 
@@ -93,7 +95,7 @@ let transferNftHelper = async (activity) => {
 
     if (user_chatIdRecipient != undefined && user_omniflixAddressRecipient != undefined) {
 
-        let msg = transferNftHelperMsg.receiverMsg.fmt({ ACTIVITYID: activity.id })
+        let msg = transferNftHelperMsg.receiverMsg.fmt({ ACTIVITYID: activity.id , IPFS_HASH: parts[parts.length - 1]})
         let mediaUrl = transferNftHelperMsg.url.fmt({ ACTIVITYID: activity.id })
         try {
             bot.telegram.sendMessage(user_chatIdRecipient, msg, {
@@ -101,7 +103,7 @@ let transferNftHelper = async (activity) => {
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            { text: "NFT Receved", url: mediaUrl }
+                            { text: "NFT Received", url: mediaUrl }
                         ]
                     ]
                 }

@@ -36,7 +36,10 @@ let listingHelper = async (activity) => {
             return console.log("no User subscribed")
         }
     }).clone()
+    let parts = activity.nft_id.preview_uri ? activity.nft_id.preview_uri.split('/') : activity.nft_id.media_uri.split('/')
+    console.log(parts[parts.length - 1])
     let msg = listingHelperMsg.message.fmt({ 
+        IPFS_HASH: parts[parts.length - 1],
         ACTIVITYNFT_IDID: activity.nft_id.id, 
         DENOMID: activity.denom_id.id, 
         COLLECTION_NAME: activity.denom_id.name
@@ -131,8 +134,10 @@ let deListingHelper = async (activity) => {
     }).clone()
 
     if (user_omniflixAddressOwner != undefined && user_chatIdOwner != undefined) {
-
+        let parts = activity.nft_id.preview_uri ? activity.nft_id.preview_uri.split('/') : activity.nft_id.media_uri.split('/')
+        console.log(parts[parts.length - 1])
         let msg = delistingHelperMsg.message.fmt({ 
+            IPFS_HASH: parts[parts.length - 1],
             ACTIVITYNFT_IDID: activity.nft_id.id, 
             DENOMID : activity.denom_id.id, 
             COLLECTION_NAME: activity.denom_id.name

@@ -22,7 +22,8 @@ let joinBot = `Get in on the NFT action:\nLink up with @OmniFlix_Alert_bot on Te
 
 let createAuctionMsg = {
   message: `***New NFT Auction Live!***  
-Starts:***{START_DATE}***,Ends:***{END_DATE}***  
+Starts:***{START_DATE}***,
+Ends:***{END_DATE}***  
 Bid now: [View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYNFT_IDID})`,
   url: `https://omniflix.market/nft/{ACTIVITYNFT_IDID} `
 };
@@ -117,14 +118,14 @@ let updateDenomHelperMsg = {
 
 
 let listingHelperMsg = {
-  message: `***New Listing of ***[NFT](https://omniflix.market/nft/{ACTIVITYNFT_IDID}) ***by ***[{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID})\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYNFT_IDID})`,
+  message: `***New Listing of ***[N](https://ipfs.omniflix.studio/ipfs/{IPFS_HASH})[FT](https://omniflix.market/nft/{ACTIVITYNFT_IDID}) ***by ***[{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID})\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYNFT_IDID})`,
   denom_url: `https://omniflix.market/collection/{DENOMID}`,
   activity_url: `https://omniflix.market/nft/{ACTIVITYNFT_IDID}`
 }
 
 
 let delistingHelperMsg = {
-  message: `***You Delisted a ***[NFT](https://omniflix.market/nft/{ACTIVITYNFT_IDID}) ***from*** [{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID})\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYNFT_IDID})`,
+  message: `***You Delisted a ***[N](https://ipfs.omniflix.studio/ipfs/{IPFS_HASH})[FT](https://omniflix.market/nft/{ACTIVITYNFT_IDID}) ***from*** [{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID})\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYNFT_IDID})`,
   denom_url: `https://omniflix.market/collection/{DENOMID}`,
   url: `https://omniflix.market/nft/{ACTIVITYNFT_IDID}`
 }
@@ -132,9 +133,9 @@ let delistingHelperMsg = {
 
 
 let transferNftHelperMsg = {
-  senderMsg: `***You transferred a*** [NFT](https://omniflix.market/nft/{ACTIVITYID})*** from collection ***[{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID}).\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYID})`,
+  senderMsg: `***You transferred a*** [N](https://ipfs.omniflix.studio/ipfs/{IPFS_HASH})[FT](https://omniflix.market/nft/{ACTIVITYID})*** from collection ***[{COLLECTION_NAME}](https://omniflix.market/collection/{DENOMID}).\n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYID})`,
 
-  receiverMsg: `***You received a NFT!*** \n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYID})`,
+  receiverMsg: `***You received a*** [N](https://ipfs.omniflix.studio/ipfs/{IPFS_HASH})[FT](https://omniflix.market/nft/{ACTIVITYID})! \n[View on Omniflix Market](https://omniflix.market/nft/{ACTIVITYID})`,
 
   denom_url: `https://omniflix.market/collection/{DENOMID}`,
   url:`https://omniflix.market/nft/{ACTIVITYID}`

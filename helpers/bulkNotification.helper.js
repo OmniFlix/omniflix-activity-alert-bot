@@ -102,7 +102,7 @@ let bulkTransfer = async (activity, totalCount) => {
 }
 
 let bulkListingNft = async (activity, totalCount) => {
-    let msg = `**${totalCount}** ***New Listings On MarketPlace.***  https://omniflix.market/marketplace/collectNow`
+    let msg = `**${totalCount}** ***New Listings On MarketPlace.***\n[View on Omniflix Market](https://omniflix.market/marketplace/collectNow)`
     
     let messageType;
     if(activity.type === 'MsgListNFT') {
@@ -268,7 +268,7 @@ let bulkBurnNft = async (activity, totalCount) => {
 }
 
 let bulkAuction = async (activity, totalCount) => {
-    let msg = ` **${totalCount}** ***New Bulk Auction Listed On MarketPlace.***  https://omniflix.market/nft`
+    let msg = ` **${totalCount}** ***New Bulk Auction Listed On MarketPlace.***\n[View on Omniflix Market](https://omniflix.market/nft)`
     let messageType;
     if(activity.type === 'MsgCreateAuction') {
         messageType = 'Multiple Auctions Creation';
